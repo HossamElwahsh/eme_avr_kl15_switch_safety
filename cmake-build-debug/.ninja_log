@@ -1,0 +1,6 @@
+# ninja log v5
+13	176	7147581388653557	CMakeFiles/klima_15_switch.dir/klima_15_switch/main.c.obj	9b5e2f3aa4624197
+30	188	7147581388753291	CMakeFiles/klima_15_switch.dir/klima_15_switch/HAL/led/Led.c.obj	1f6461d03daa8ab3
+7	199	7147581388882939	CMakeFiles/klima_15_switch.dir/klima_15_switch/MCAL/adc/adc_program.c.obj	54badc03275509a9
+18	202	7147581388942772	CMakeFiles/klima_15_switch.dir/klima_15_switch/MCAL/gpio/gpio.c.obj	baa3a21fa73fe9c3
+24	224	7147581389223632	CMakeFiles/klima_15_switch.dir/klima_15_switch/MCAL/timer/Timers.c.obj	5bac5f25e9bf0e2a

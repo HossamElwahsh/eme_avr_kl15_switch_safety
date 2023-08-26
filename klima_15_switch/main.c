@@ -5,13 +5,14 @@
  * Author : Team GUCALEX
  */ 
 
-
+#include "app_interface.h"
 
 int main(void)
 {
-    /* Replace with your application code */
-    while (1) 
-    {
-    }
+    /* init application */
+    app_init();
+
+    /* start application */
+    app_start();
 }
 
