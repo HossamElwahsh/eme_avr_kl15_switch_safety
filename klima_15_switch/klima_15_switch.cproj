@@ -106,6 +106,7 @@
       <Value>../COMMON</Value>
       <Value>../APP</Value>
       <Value>../HAL/KL_switch</Value>
+      <Value>../HAL/ldr</Value>
     </ListValues>
   </avrgcc.compiler.directories.IncludePaths>
   <avrgcc.compiler.optimization.level>Optimize debugging experience (-Og)</avrgcc.compiler.optimization.level>
@@ -167,6 +168,12 @@
     <Compile Include="HAL\lcd\lcd_program.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="HAL\ldr\ldr.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="HAL\ldr\ldr.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="HAL\led\Led.c">
       <SubType>compile</SubType>
     </Compile>
@@ -214,6 +221,7 @@
     <Folder Include="HAL\lcd" />
     <Folder Include="HAL\led" />
     <Folder Include="HAL\KL_switch" />
+    <Folder Include="HAL\ldr" />
     <Folder Include="MCAL" />
     <Folder Include="HAL" />
     <Folder Include="APP" />
