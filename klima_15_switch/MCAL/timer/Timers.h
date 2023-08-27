@@ -37,8 +37,8 @@ typedef enum
 
 }OC0Mode_type;
 
-void TIMER0_Init(Timer0Mode_type mode,Timer0Scaler_type scaler);
-
+void TIMER0_Init(Timer0Mode_type mode);
+void Timer1_change(Timer0Scaler_type scaler);
 void TIMER0_OC0Mode(OC0Mode_type mode);
 void TIMER0_OV_InterruptEnable(void);
 void TIMER0_OV_InterruptDisable(void);
