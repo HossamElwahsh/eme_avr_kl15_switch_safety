@@ -9,7 +9,20 @@
 #include "lcd_interface.h"
 #include "Timers.h"
 
-#include "led_interface.h"
+#include "Led.h"
+
+static void app_switch_state();
+
+typedef enum
+{
+    CAR_OFF = 0 ,
+    CAR_READY   ,
+    CAR_ON      ,
+    CAR_STATE_TOTAL
+}en_app_state_t;
+
+/* initial car state */
+en_app_state_t en_gs_app_state = CAR_OFF;
 
 void app_init()
 {
@@ -24,6 +37,17 @@ void app_init()
 }
 
 void app_start()
+{
+
+    /* App super-loop */
+    while (TRUE)
+    {
+        /* Check Switch */
+
+    }
+}
+
+static void app_switch_state(en_app_state_t en_a_app_state)
 {
 
 }
