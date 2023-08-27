@@ -11,7 +11,7 @@
 
 /* Global Variables */
 /* ADC Reading */
-uint16_t_ uint16_g_last_reading = 0;
+uint16_t_ uint16_g_last_reading[ADC_IN_USE_CHANNELS] = {0};
 
 /* Private variables */
 static boolean init_success = FALSE;
@@ -44,7 +44,7 @@ en_adc_status_t adc_init(void)
                 ((ADC_CPU_FREQ_HZ / st_l_adc_config.en_adc_prescaler) < ADC_MAX_FREQ_HZ))
         {
             /* init ADC channel pin as input */
-            GPIO_setupPinDirection(ADC_PORT, st_l_adc_config.en_adc_channel, PIN_INPUT);
+            dio_init(ADC_PORT, (enu_dio_pin_t_) st_l_adc_config.en_adc_channel, DIO_IN);
 
             /* SETUP PRESCALER */
             switch (st_l_adc_config.en_adc_prescaler) {
@@ -190,13 +190,20 @@ en_adc_status_t adc_read(en_adc_channel_t en_a_adc_channel)
         /* update mux value to select proper ADC Channel */
 
         /* set mux value - bit 0 */
-        WRITE_BIT(ADC_ADMUX_REG, ADC_ADMUX_MUX0_BIT, GET_BIT(en_a_adc_channel, ADC_ADMUX_MUX0_BIT));
+//        WRITE_BIT(ADC_ADMUX_REG, ADC_ADMUX_MUX0_BIT, GET_BIT(en_a_adc_channel, ADC_ADMUX_MUX0_BIT));
 
         /* set mux value - bit 1 */
-        WRITE_BIT(ADC_ADMUX_REG, ADC_ADMUX_MUX1_BIT, GET_BIT(en_a_adc_channel, ADC_ADMUX_MUX1_BIT));
+//        WRITE_BIT(ADC_ADMUX_REG, ADC_ADMUX_MUX1_BIT, GET_BIT(en_a_adc_channel, ADC_ADMUX_MUX1_BIT));
 
         /* set mux value - bit 2 */
-        WRITE_BIT(ADC_ADMUX_REG, ADC_ADMUX_MUX2_BIT, GET_BIT(en_a_adc_channel, ADC_ADMUX_MUX2_BIT));
+//        WRITE_BIT(ADC_ADMUX_REG, ADC_ADMUX_MUX2_BIT, GET_BIT(en_a_adc_channel, ADC_ADMUX_MUX2_BIT));
+
+        /* Clear MUX Bits */
+        ADC_ADMUX_REG &= 0xF0; // clear mux bits
+
+        /* Set to match required ADC Channel */
+        ADC_ADMUX_REG |= (en_a_adc_channel & 0x0F); // set to match required ADC channel
+
 
         /* start conversion */
         SET_BIT(ADC_ADCSRA_REG, ADC_ADCSRA_ADSC_BIT);
@@ -206,9 +213,11 @@ en_adc_status_t adc_read(en_adc_channel_t en_a_adc_channel)
             /* poll conversion complete */
             while(ZERO == GET_BIT(ADC_ADCSRA_REG, ADC_ADCSRA_ADIF_BIT));
 
-            /* todo Left adjust mode */
-            uint16_g_last_reading = ADC_ADCL_REG;
-            uint16_g_last_reading += ((ADC_ADCH_REG & 0x03) << 8);
+            uint16_g_last_reading[en_a_adc_channel] = ADC_ADCL_REG;
+            uint16_g_last_reading[en_a_adc_channel] += ((ADC_ADCH_REG & 0x03) << 8);
+
+            /* Clear interrupt flag by setting it to 1 */
+            SET_BIT(ADC_ADCSRA_REG, ADC_ADCSRA_ADIF_BIT);
         }
         else
         {
@@ -222,9 +231,6 @@ en_adc_status_t adc_read(en_adc_channel_t en_a_adc_channel)
 ISR(ADC_INT)
 {
     /* ADC Read Complete - update last read value */
-    uint16_g_last_reading = ADC_ADCL_REG;
-    uint16_g_last_reading += ((ADC_ADCH_REG & 0x03) << 8);
-
-    /* Clear interrupt flag by setting it to 1 */
-    SET_BIT(ADC_ADCSRA_REG, ADC_ADCSRA_ADIF_BIT);
+    uint16_g_last_reading[INT_CHANNEL] = ADC_ADCL_REG;
+    uint16_g_last_reading[INT_CHANNEL] += ((ADC_ADCH_REG & 0x03) << 8);
 }

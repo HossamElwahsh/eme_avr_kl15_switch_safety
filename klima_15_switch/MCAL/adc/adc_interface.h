@@ -11,7 +11,7 @@
 
 #include "std.h"
 
-extern uint16_t_ uint16_g_last_reading;
+extern uint16_t_ uint16_g_last_reading[];
 
 typedef enum
 {

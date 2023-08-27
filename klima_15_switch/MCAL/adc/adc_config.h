@@ -12,9 +12,12 @@
 
 #define ADC_CPU_FREQ_HZ         16000000    // 16   MHz
 #define ADC_MAX_FREQ_HZ         200000      // 200  KHz
-#define ADC_PORT                PORTA_ID
+#define ADC_PORT                DIO_PORT_A
 
 #define ADC_IN_USE_CHANNELS     2
+
+/* Channel reading updated from ISR */
+#define INT_CHANNEL ADC_CH_1
 
 extern st_adc_config_t st_g_adc_config_arr[ADC_IN_USE_CHANNELS];
 
