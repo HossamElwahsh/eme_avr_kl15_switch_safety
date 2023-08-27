@@ -98,10 +98,10 @@ typedef enum{
 
 
 void Timer1_InputCaptureEdge(ICU_Edge_type edge);
-void Timer1_Init( Timer1Mode_type mode,Timer1Scaler_type scaler);
+void Timer1_Init( Timer1Mode_type mode);
 void Timer1_OCRA1Mode(OC1A_Mode_type oc1a_mode);
 void Timer1_OCRB1Mode(OC1B_Mode_type oc1b_mode);
-
+void Timer1_change(Timer1Scaler_type scaler);
 
 void Timer1_ICU_InterruptEnable(void);
 void Timer1_ICU_InterruptDisable(void);
