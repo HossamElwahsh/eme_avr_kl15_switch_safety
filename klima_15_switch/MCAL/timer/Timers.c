@@ -75,7 +75,7 @@ void TIMER0_OC_InterruptDisable(void)
 
 /*************************************************************************/
 /*timer 1 functions*/
-void Timer1_Init( Timer1Mode_type mode,Timer1Scaler_type scaler)
+void Timer1_Init( Timer1Mode_type mode)
 {
 	switch (mode)
 	{
@@ -122,9 +122,14 @@ void Timer1_Init( Timer1Mode_type mode,Timer1Scaler_type scaler)
 		break;
 	}
 
+	
+
+}
+
+void Timer1_change(Timer1Scaler_type scaler)
+{
 	TCCR1B&=0XF8;
 	TCCR1B|=scaler;
-
 }
 void Timer1_OCRA1Mode(OC1A_Mode_type oc1a_mode)
 {
