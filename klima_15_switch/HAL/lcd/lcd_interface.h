@@ -144,4 +144,7 @@ void LCD_shiftClear(void);
 
 void LCD_init_test(void);
 
+void LCD_printNumberFromEnd(uint16_t_ uint16_a_number, uint8_t_ lcd_line, uint8_t_ lcd_col);
+
+
 #endif /* LCD_INTERFACE_H_ */

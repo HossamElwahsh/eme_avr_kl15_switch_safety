@@ -14,23 +14,28 @@
 
 #include "Led.h"
 
-
 typedef enum
 {
-    INIT_UI = 0 ,
-    CAR_OFF     ,
-    CAR_READY   ,
-    CAR_ON      ,
+    INIT_UI = 0     ,
+    CAR_OFF         ,
+    CAR_READY       ,
+    CAR_ON          ,
     CAR_STATE_TOTAL
 }en_app_state_t;
 
 static void app_switch_state(en_app_state_t en_a_app_state);
 static void app_key_changed(en_read_states_t en_l_kl_state);
+static void app_timer_tick_event(void);
 
+/* day/night flag */
 static boolean bool_gs_is_night = FALSE;
 
 /* initial car state */
 en_app_state_t en_gs_app_state = CAR_OFF;
+boolean        bool_car_sleep_mode = FALSE;
+
+/* Time elapsed */
+static uint8_t_ uint8_gs_seconds_elapsed = 0;
 
 void app_init()
 {
@@ -41,8 +46,13 @@ void app_init()
     ldr_init();
 
     /* Init Timer */
-    Timer1_Init(TIMER1_NORMAL_MODE, TIMER1_SCALER_256);
+    Timer1_Init(TIMER1_NORMAL_MODE);
+
+    /* Enable Timer Overflow */
     Timer1_OVF_InterruptEnable();
+
+    /* Set Timer Callback */
+    Timer1_OVF_SetCallBack(app_timer_tick_event);
 
     /* Init KL_Switch */
     KL_Switch_init();
@@ -67,6 +77,9 @@ void app_start()
 
     /* Update is night flag */
     bool_gs_is_night = LDR_40_PERCENT < LDR_VALUE;
+
+    LCD_setCursor(LCD_LINE3, LCD_COL19);
+    LCD_printNumberFromEnd(LDR_VALUE, LCD_LINE3, LCD_COL19);
 
     /* App super-loop */
     while (TRUE)
@@ -98,7 +111,6 @@ void app_start()
                 break;
             }
             case CAR_READY:
-                /* Check timer */
 
                 /* Check key state */
                 if(Ready != en_l_kl_state)
@@ -109,6 +121,15 @@ void app_start()
                 {
                     /* Do nothing */
                 }
+
+                /* Check timer */
+                if(APP_CAR_BATTERY_TIMEOUT_IN_SEC < uint8_gs_seconds_elapsed)
+                {
+                    /* Turn car off */
+                    bool_car_sleep_mode = TRUE;
+                    app_switch_state(CAR_OFF);
+                }
+
                 break;
 
             case CAR_ON:
@@ -121,6 +142,21 @@ void app_start()
                 else
                 {
                     /* Do nothing */
+                }
+
+
+                /* Check day/night light */
+                if(TRUE == bool_gs_is_night)
+                {
+                    /* Night, turn on car front lights */
+                    Led_TurnOn(APP_CAR_FRONT_LEFT_LIGHT_ARGS);
+                    Led_TurnOn(APP_CAR_FRONT_RIGHT_LIGHT_ARGS);
+                }
+                else
+                {
+                    /* Day, turn off car front lights */
+                    Led_TurnOff(APP_CAR_FRONT_LEFT_LIGHT_ARGS);
+                    Led_TurnOff(APP_CAR_FRONT_RIGHT_LIGHT_ARGS);
                 }
                 break;
             }
@@ -140,23 +176,55 @@ void app_start()
     }
 }
 
+static void app_reset_battery_drain_watchdog()
+{
+    /* Stop timer */
+    TIMER1_STOP();
+
+    /* Reset elapsed time */
+    uint8_gs_seconds_elapsed = ZERO;
+}
+
 static void app_key_changed(en_read_states_t en_l_kl_state)
 {
     switch (en_l_kl_state)
     {
         case OFF:
         {
+            /* Stop watchdog */
+            app_reset_battery_drain_watchdog();
+
+            /* Switch to car on */
             app_switch_state(CAR_OFF);
+
+            /* reset sleep flag */
+            bool_car_sleep_mode = FALSE;
             break;
         }
         case Ready:
         {
-            app_switch_state(CAR_READY);
+            /* Check if car is sleeping */
+            if(TRUE == bool_car_sleep_mode)
+            {
+                /* Do Nothing */
+            }
+            else
+            {
+                app_switch_state(CAR_READY);
+            }
             break;
         }
         case ON:
         {
+            /* Check if car is sleeping */
+            /* Stop watchdog */
+            app_reset_battery_drain_watchdog();
+
+            /* Switch to car on */
             app_switch_state(CAR_ON);
+
+            /* reset sleep flag */
+            bool_car_sleep_mode = FALSE;
             break;
         }
     }
@@ -169,6 +237,7 @@ static void app_switch_state(en_app_state_t en_a_app_state)
         case INIT_UI:
         {
             /* Init LCD UI */
+            LCD_clear();
             LCD_sendString(APP_STR_TITLE);
             break;
         }
@@ -180,7 +249,7 @@ static void app_switch_state(en_app_state_t en_a_app_state)
             Led_TurnOff(APP_CAR_FRONT_RIGHT_LIGHT_ARGS);
 
             /* Update UI */
-            LCD_setCursor(LCD_LINE2, LCD_COL6);
+            LCD_setCursor(LCD_LINE2, LCD_COL1);
             LCD_sendString(APP_STR_CAR_OFF);
             break;
         }
@@ -190,17 +259,21 @@ static void app_switch_state(en_app_state_t en_a_app_state)
             Led_TurnOn(APP_INTERIOR_LIGHT_ARGS);
 
             /* Update UI */
-            LCD_setCursor(LCD_LINE2, LCD_COL0);
-            LCD_sendString("Please Start Motor");
+            LCD_setCursor(LCD_LINE2, LCD_COL1);
+            LCD_sendString(APP_STR_CAR_READY);
 
             /* Start watchdog timer to prevent battery drain */
-
+            TIMER1_START();
             break;
         }
         case CAR_ON:
         {
             /* Turn on car interior */
             Led_TurnOn(APP_INTERIOR_LIGHT_ARGS);
+
+            /* Update UI */
+            LCD_setCursor(LCD_LINE2, LCD_COL1);
+            LCD_sendString(APP_STR_CAR_RUNNING);
 
             /* Check day/night light */
             if(TRUE == bool_gs_is_night)
@@ -230,4 +303,10 @@ static void app_switch_state(en_app_state_t en_a_app_state)
     }
 
     en_gs_app_state = en_a_app_state;
+}
+
+static void app_timer_tick_event(void)
+{
+    /* Timer Ticked 1 second */
+    uint8_gs_seconds_elapsed++;
 }

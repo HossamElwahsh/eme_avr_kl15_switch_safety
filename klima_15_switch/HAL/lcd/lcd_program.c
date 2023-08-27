@@ -270,3 +270,20 @@ void LCD_shiftClear(void)
     LCD_sendCommand(LCD_CMD_CLEAR);
     u8_gs_cursor = 0;
 }
+
+
+void LCD_printNumberFromEnd(uint16_t_ uint16_a_number, uint8_t_ lcd_line, uint8_t_ lcd_col)
+{
+    int digit;
+
+    /* print */
+    do
+    {
+        LCD_setCursor(lcd_line, lcd_col);
+
+        digit = uint16_a_number % 10;
+        LCD_sendChar(digit + '0'); // print ASCII digit
+        lcd_col--;
+    } while (uint16_a_number /= 10);
+
+}

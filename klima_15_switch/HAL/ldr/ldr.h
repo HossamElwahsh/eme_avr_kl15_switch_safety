@@ -14,7 +14,9 @@
 
 #define LDR_ADC_CHANNEL ADC_CH_0
 
-#define LDR_VALUE   uint16_g_last_reading[LDR_ADC_CHANNEL]
+#define CONVERT_ANALOG_TO_PERCENT(analog_signal) (100 - ((analog_signal * 100.0) / 1024))
+
+#define LDR_VALUE    CONVERT_ANALOG_TO_PERCENT(uint16_g_last_reading[LDR_ADC_CHANNEL])
 
 #define LDR_40_PERCENT 40
 

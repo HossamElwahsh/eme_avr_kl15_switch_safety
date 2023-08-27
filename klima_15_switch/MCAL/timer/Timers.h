@@ -18,6 +18,9 @@ typedef enum{
 	EXTERNAL_RISING
 }Timer0Scaler_type;
 
+#define TIMER1_START()    Timer1_change(TIMER1_SCALER_256);
+#define TIMER1_STOP()     Timer1_change(TIMER1_STOP);
+
 typedef enum
 {
 	TIMER0_NORMAL_MODE=0,

@@ -36,15 +36,20 @@ en_read_states_t KL_Switch_Read_state(void){
     en_read_states_t state=OFF;
 
     adc_read(ADC_CH_1);
-    if(uint16_g_last_reading[ADC_CH_1] < 430 )
+    if(uint16_g_last_reading[ADC_CH_1] < 440 )
     {
         state=OFF;
     }
-    else if (uint16_g_last_reading[ADC_CH_1]>430 && uint16_g_last_reading[ADC_CH_1]<440){
+    else if ((uint16_g_last_reading[ADC_CH_1] >= 440 ) && (uint16_g_last_reading[ADC_CH_1] <= 450)){
         state=Ready;
     }
-    else {
+    else if(uint16_g_last_reading[ADC_CH_1] > 450)
+    {
         state= ON;
+    }
+    else
+    {
+        /* Do Nothing*/
     }
     return state;
 }
