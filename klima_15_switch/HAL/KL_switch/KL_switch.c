@@ -30,7 +30,7 @@ en_klswitch_t KL_Switch_init(){
         }
     }
 
-
+    return intial;
 }
 en_read_states_t KL_Switch_Read_state(void){
     en_read_states_t state=SKIP;
