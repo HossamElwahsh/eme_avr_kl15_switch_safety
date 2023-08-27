@@ -53,6 +53,7 @@ void app_init()
 
     /* Enable interrupt */
     sei();
+    
 
     /* Set Timer Callback */
     Timer1_OVF_SetCallBack(app_timer_tick_event);

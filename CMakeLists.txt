@@ -6,8 +6,11 @@ set(CMAKE_C_STANDARD 11)
 include_directories(klima_15_switch/APP)
 include_directories(klima_15_switch/COMMON)
 include_directories(klima_15_switch/MCAL/gpio)
+include_directories(klima_15_switch/MCAL/adc)
 include_directories(klima_15_switch/HAL/lcd)
+include_directories(klima_15_switch/HAL/KL_switch)
 include_directories(klima_15_switch/HAL/led)
+include_directories(klima_15_switch/HAL/ldr)
 include_directories(klima_15_switch/MCAL/timer)
 include_directories("C:/WinAVR-20100110/avr/include/")
 
@@ -33,5 +36,8 @@ add_executable(klima_15_switch
         klima_15_switch/HAL/lcd/lcd_private.h
         klima_15_switch/HAL/lcd/lcd_config.h
         klima_15_switch/HAL/led/Led.c
+        klima_15_switch/HAL/ldr/ldr.h
+        klima_15_switch/HAL/ldr/ldr.c
+        klima_15_switch/HAL/KL_switch/KL_switch.c
 
 )
