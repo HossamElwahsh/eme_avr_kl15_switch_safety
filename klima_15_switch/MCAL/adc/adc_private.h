@@ -9,7 +9,7 @@
 #ifndef ADC_PRIVATE_H_
 #define ADC_PRIVATE_H_
 #include "std.h"
-#include "dio_interface.h"
+#include "gpio.h"
 #include "bit_math.h"
 #include "interrupts.h"
 

@@ -12,7 +12,7 @@
 
 #define ADC_CPU_FREQ_HZ         16000000    // 16   MHz
 #define ADC_MAX_FREQ_HZ         200000      // 200  KHz
-#define ADC_PORT                DIO_PORT_A
+#define ADC_PORT                PORTA_ID
 
 #define ADC_IN_USE_CHANNELS     2
 

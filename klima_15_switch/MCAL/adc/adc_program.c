@@ -44,7 +44,7 @@ en_adc_status_t adc_init(void)
                 ((ADC_CPU_FREQ_HZ / st_l_adc_config.en_adc_prescaler) < ADC_MAX_FREQ_HZ))
         {
             /* init ADC channel pin as input */
-            dio_init(ADC_PORT, (enu_dio_pin_t_) st_l_adc_config.en_adc_channel, DIO_IN);
+            GPIO_setupPinDirection(ADC_PORT, st_l_adc_config.en_adc_channel, PIN_INPUT);
 
             /* SETUP PRESCALER */
             switch (st_l_adc_config.en_adc_prescaler) {

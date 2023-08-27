@@ -25,6 +25,7 @@ add_executable(klima_15_switch
         klima_15_switch/MCAL/timer/Timers.h
         klima_15_switch/main.c
         klima_15_switch/MCAL/adc/adc_program.c
+        klima_15_switch/MCAL/adc/adc_private.h
         klima_15_switch/APP/app_config.h
         "C:/WinAVR-20100110/avr/include/util/delay.h"
         klima_15_switch/HAL/lcd/lcd_program.c
