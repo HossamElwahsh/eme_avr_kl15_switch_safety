@@ -105,6 +105,7 @@
       <Value>../HAL/led</Value>
       <Value>../COMMON</Value>
       <Value>../APP</Value>
+      <Value>../HAL/KL_switch</Value>
     </ListValues>
   </avrgcc.compiler.directories.IncludePaths>
   <avrgcc.compiler.optimization.level>Optimize debugging experience (-Og)</avrgcc.compiler.optimization.level>
@@ -146,6 +147,12 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="COMMON\std.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="HAL\KL_switch\KL_switch.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="HAL\KL_switch\KL_switch.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="HAL\lcd\lcd_config.h">
@@ -206,6 +213,7 @@
   <ItemGroup>
     <Folder Include="HAL\lcd" />
     <Folder Include="HAL\led" />
+    <Folder Include="HAL\KL_switch" />
     <Folder Include="MCAL" />
     <Folder Include="HAL" />
     <Folder Include="APP" />
