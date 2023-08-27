@@ -8,7 +8,7 @@ static void (*Timer1_OCB_Fptr) (void)=NULL_PTR;
 static void (*Timer1_ICU_Fptr) (void)=NULL_PTR;
 /******************************************************************************************/
 /*timer 0 functions*/
-void TIMER0_Init(Timer0Mode_type mode,Timer0Scaler_type scaler)
+void TIMER0_Init(Timer0Mode_type mode)
 {
 	switch (mode)
 	{
@@ -29,6 +29,10 @@ void TIMER0_Init(Timer0Mode_type mode,Timer0Scaler_type scaler)
 		SET_BIT(TCCR0,WGM01);
 		break;
 	}
+	
+}
+void Timer1_change(Timer0Scaler_type scaler)
+{
 	TCCR0&=0XF8;//0b11111000
 	TCCR0|=scaler;
 }
