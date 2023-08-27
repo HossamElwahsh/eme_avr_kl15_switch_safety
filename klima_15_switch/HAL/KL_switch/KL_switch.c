@@ -33,17 +33,17 @@ en_klswitch_t KL_Switch_init(){
 
 }
 en_read_states_t KL_Switch_Read_state(void){
-    en_read_states_t state=OFF;
+    en_read_states_t state=SKIP;
 
     adc_read(ADC_CH_1);
     if(uint16_g_last_reading[ADC_CH_1] < 440 )
     {
         state=OFF;
     }
-    else if ((uint16_g_last_reading[ADC_CH_1] >= 440 ) && (uint16_g_last_reading[ADC_CH_1] <= 450)){
+    else if ((uint16_g_last_reading[ADC_CH_1] > 446 ) && (uint16_g_last_reading[ADC_CH_1] < 455)){
         state=Ready;
     }
-    else if(uint16_g_last_reading[ADC_CH_1] > 450)
+    else if(uint16_g_last_reading[ADC_CH_1] > 462)
     {
         state= ON;
     }

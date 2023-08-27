@@ -15,7 +15,8 @@ typedef enum
 {
     OFF =0 ,
     Ready ,
-    ON
+    ON,
+    SKIP
 }en_read_states_t;
 
 typedef enum

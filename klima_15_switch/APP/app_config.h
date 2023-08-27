@@ -29,6 +29,6 @@
 #define APP_STR_CAR_READY   "Please start Motor"
 #define APP_STR_CAR_RUNNING   "Car Motor Running."
 
-#define APP_CAR_BATTERY_TIMEOUT_IN_SEC  5
+#define APP_CAR_BATTERY_TIMEOUT_IN_SEC  10
 
 #endif /* APP_CONFIG_H_ */

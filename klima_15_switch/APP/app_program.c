@@ -82,11 +82,7 @@ void app_start()
         ldr_read();
 
         /* Update is night flag */
-        bool_gs_is_night = LDR_NIGHT_THRESHOLD < LDR_VALUE;
-
-        LCD_setCursor(LCD_LINE3, LCD_COL19);
-        LCD_printNumberFromEnd(LDR_VALUE, LCD_LINE3, LCD_COL19);
-
+        bool_gs_is_night = LDR_NIGHT_THRESHOLD > LDR_VALUE;
 
         /* Read KL15 Switch State */
         en_l_kl_state = KL_Switch_Read_state();
